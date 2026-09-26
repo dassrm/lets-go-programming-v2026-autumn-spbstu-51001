@@ -3,33 +3,37 @@ package main
 import "fmt"
 
 func main() {
-	var input_1, input_2 int
+	var firstOperand, secondOperand int
 	var operator string
 
-	_, err := fmt.Scanln(&input_1)
+	_, err := fmt.Scanln(&firstOperand)
 	if err != nil {
 		fmt.Println("Invalid first operand")
 		return
 	}
-	_, err = fmt.Scanln(&input_2)
+	_, err = fmt.Scanln(&secondOperand)
 	if err != nil {
 		fmt.Println("Invalid second operand")
 		return
 	}
-	fmt.Scanln(&operator)
+	_, err = fmt.Scanln(&operator)
+	if err != nil {
+		fmt.Println("Invalid operation")
+		return
+	}
 
 	switch operator {
 	case "+":
-		fmt.Println(input_1 + input_2)
+		fmt.Println(firstOperand + secondOperand)
 	case "-":
-		fmt.Println(input_1 - input_2)
+		fmt.Println(firstOperand - secondOperand)
 	case "*":
-		fmt.Println(input_1 * input_2)
+		fmt.Println(firstOperand * secondOperand)
 	case "/":
-		if input_2 == 0 {
+		if secondOperand == 0 {
 			fmt.Println("Division by zero")
 		} else {
-			fmt.Println(input_1 / input_2)
+			fmt.Println(firstOperand / secondOperand)
 		}
 	default:
 		fmt.Println("Invalid operation")
