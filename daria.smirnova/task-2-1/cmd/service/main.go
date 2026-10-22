@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 const (
 	minTemp = 15
@@ -8,6 +11,8 @@ const (
 
 	noSuitableTemp = -1
 )
+
+var errInvalidOperator = errors.New("operator must be >= or <=")
 
 func readCount(name string) (int, error) {
 	var count int
@@ -19,15 +24,17 @@ func readCount(name string) (int, error) {
 	return count, nil
 }
 
-func applyWish(operator string, temp, low, high int) (int, int) {
+func applyWish(operator string, temp, low, high int) (int, int, error) {
 	switch operator {
 	case ">=":
 		low = max(low, temp)
 	case "<=":
 		high = min(high, temp)
+	default:
+		return low, high, errInvalidOperator
 	}
 
-	return low, high
+	return low, high, nil
 }
 
 func optimalTemp(low, high int) int {
@@ -56,7 +63,10 @@ func processDepartment() error {
 			return err
 		}
 
-		low, high = applyWish(operator, temp, low, high)
+		low, high, err = applyWish(operator, temp, low, high)
+		if err != nil {
+			return err
+		}
 
 		fmt.Println(optimalTemp(low, high))
 	}
