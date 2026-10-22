@@ -2,6 +2,11 @@ package main
 
 import "fmt"
 
+const (
+	minTemp = 15
+	maxTemp = 30
+)
+
 func main() {
 	var departments int
 
@@ -20,6 +25,8 @@ func main() {
 			return
 		}
 
+		low, high := minTemp, maxTemp
+
 		for range employees {
 			var (
 				operator string
@@ -31,6 +38,15 @@ func main() {
 
 				return
 			}
+
+			switch operator {
+			case ">=":
+				low = max(low, temp)
+			case "<=":
+				high = min(high, temp)
+			}
+
+			fmt.Println(low)
 		}
 	}
 }
