@@ -9,6 +9,27 @@ const (
 	noSuitableTemp = -1
 )
 
+func readCount(name string) (int, error) {
+	var count int
+
+	if _, err := fmt.Scan(&count); err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
+func applyWish(operator string, temp, low, high int) (int, int) {
+	switch operator {
+	case ">=":
+		low = max(low, temp)
+	case "<=":
+		high = min(high, temp)
+	}
+
+	return low, high
+}
+
 func optimalTemp(low, high int) int {
 	if low > high {
 		return noSuitableTemp
@@ -17,46 +38,45 @@ func optimalTemp(low, high int) int {
 	return low
 }
 
-func main() {
-	var departments int
+func processDepartment() error {
+	employees, err := readCount("employees count")
+	if err != nil {
+		return err
+	}
 
-	if _, err := fmt.Scan(&departments); err != nil {
+	low, high := minTemp, maxTemp
+
+	for range employees {
+		var (
+			operator string
+			temp     int
+		)
+
+		if _, err := fmt.Scan(&operator, &temp); err != nil {
+			return err
+		}
+
+		low, high = applyWish(operator, temp, low, high)
+
+		fmt.Println(optimalTemp(low, high))
+	}
+
+	return nil
+}
+
+func main() {
+	departments, err := readCount("departments count")
+	if err != nil {
 		fmt.Println("Error while reading input:", err)
 
 		return
 	}
 
 	for range departments {
-		var employees int
-
-		if _, err := fmt.Scan(&employees); err != nil {
+		if err := processDepartment(); err != nil {
 			fmt.Println("Error while reading input:", err)
 
 			return
-		}
-
-		low, high := minTemp, maxTemp
-
-		for range employees {
-			var (
-				operator string
-				temp     int
-			)
-
-			if _, err := fmt.Scan(&operator, &temp); err != nil {
-				fmt.Println("Error while reading input:", err)
-
-				return
-			}
-
-			switch operator {
-			case ">=":
-				low = max(low, temp)
-			case "<=":
-				high = min(high, temp)
-			}
-
-			fmt.Println(optimalTemp(low, high))
 		}
 	}
 }
