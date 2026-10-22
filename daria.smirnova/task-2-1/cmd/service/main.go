@@ -5,7 +5,17 @@ import "fmt"
 const (
 	minTemp = 15
 	maxTemp = 30
+
+	noSuitableTemp = -1
 )
+
+func optimalTemp(low, high int) int {
+	if low > high {
+		return noSuitableTemp
+	}
+
+	return low
+}
 
 func main() {
 	var departments int
@@ -46,7 +56,7 @@ func main() {
 				high = min(high, temp)
 			}
 
-			fmt.Println(low)
+			fmt.Println(optimalTemp(low, high))
 		}
 	}
 }
