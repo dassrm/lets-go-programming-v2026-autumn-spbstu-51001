@@ -18,7 +18,7 @@ func readCount(name string) (int, error) {
 	var count int
 
 	if _, err := fmt.Scan(&count); err != nil {
-		return 0, err
+		return 0, fmt.Errorf("reading %s: %w", name, err)
 	}
 
 	return count, nil
@@ -31,7 +31,7 @@ func applyWish(operator string, temp, low, high int) (int, int, error) {
 	case "<=":
 		high = min(high, temp)
 	default:
-		return low, high, errInvalidOperator
+		return low, high, fmt.Errorf("invalid operator %q: %w", operator, errInvalidOperator)
 	}
 
 	return low, high, nil
@@ -60,7 +60,7 @@ func processDepartment() error {
 		)
 
 		if _, err := fmt.Scan(&operator, &temp); err != nil {
-			return err
+			return fmt.Errorf("reading employee request: %w", err)
 		}
 
 		low, high, err = applyWish(operator, temp, low, high)
